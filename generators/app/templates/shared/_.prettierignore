@@ -1,0 +1,6 @@
+build
+out
+.next
+.idea
+.vscode
+node_modules

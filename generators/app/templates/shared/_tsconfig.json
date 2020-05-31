@@ -1,28 +1,26 @@
 {
-    "compileOnSave": false,
-    "compilerOptions": {
-        "noEmit": true,
-        "target": "esnext",
-        "module": "esnext",
-        "jsx": "preserve",
-        "allowJs": true,
-        "moduleResolution": "node",
-        "allowSyntheticDefaultImports": true,
-        "removeComments": false,
-        "preserveConstEnums": true,
-        "experimentalDecorators": true,
-        "sourceMap": true,
-        "skipLibCheck": true,
-        "baseUrl": ".",
-        "strictNullChecks": false,
-        "typeRoots": ["./node_modules/@types", "./typings"],
-        "lib": ["dom", "es2015", "es2016"],
-        "strict": false,
-        "forceConsistentCasingInFileNames": true,
-        "esModuleInterop": true,
-        "resolveJsonModule": true,
-        "isolatedModules": true
-    },
-    "exclude": [".next", "server/**/*.*", "dist", "tests", "storybook"],
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+  "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "newLine": "lf",
+    "removeComments": false,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "typeRoots": ["./node_modules/@types"],
+    "paths": {
+      "~/*": ["./*"]
+    }
+  },
+  "exclude": ["node_modules"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }
