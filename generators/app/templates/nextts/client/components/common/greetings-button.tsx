@@ -7,8 +7,7 @@ interface IProps {
 
 const GreetingsButton: FC<IProps> = memo(({ text }) => {
   const onClick = async () => {
-    const res = await requestGreetings();
-    console.log(res);
+    await requestGreetings();
   };
 
   return (
