@@ -1,50 +1,72 @@
 import Axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
-type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
-
-const baseURL = '/api/';
-
-async function request<T>(method: Method, url: string, payload: T): Promise<T> {
-    try {
-        const headers = {};
-
-        const config: AxiosRequestConfig = {
-            url,
-            method,
-            baseURL,
-            headers,
-            params: method === 'GET' || method === 'DELETE' ? payload : null,
-            data: method === 'GET' || method === 'DELETE' ? null : payload,
-            responseType: 'json',
-        };
-        const res = await Axios.request<T>(config);
-        return res.data;
-    } catch (ex) {
-        const { response } = ex as AxiosError;
-        throw {
-            status: response.status,
-            code: response.data ? response.data.code : -1,
-            message: response.data ? response.data.message : '',
-        };
-    }
+interface IRequestOptions<Body = any> {
+  path: string;
+  method: 'GET' | 'POST' | 'DELETE' | 'PATCH' | 'HEAD' | 'PUT';
+  body?: Body;
+  query?: { [key in string]: string };
 }
 
-export function get<T = any>(url: string, payload = null): Promise<T> {
-    return request<T>('GET', url, payload);
-}
+const request = async <T>(opts: IRequestOptions): Promise<T> => {
+  const config: AxiosRequestConfig = {
+    url: `/api${opts.path}`,
+    method: opts.method,
+  };
 
-export function post<T = any>(url: string, payload = null): Promise<T> {
-    return request<T>('POST', url, payload);
-}
+  if (opts.method === 'POST' || opts.method === 'PUT' || opts.method === 'PATCH') {
+    config.data = opts.body || {};
+  }
 
-export function put<T = any>(url: string, payload = null): Promise<T> {
-    return request<T>('PUT', url, payload);
-}
+  if (opts.method === 'GET' || opts.method === 'DELETE') {
+    config.params = opts.query;
+  }
 
-export function del<T = any>(url: string, payload = null): Promise<T> {
-    return request<T>('DELETE', url, payload);
-}
+  try {
+    const response = await Axios.request<T>(config);
+    return response.data;
+  } catch (ex) {
+    throw ex;
+  }
+};
 
-export function patch<T = any>(url: string, payload = null): Promise<T> {
-    return request<T>('PATCH', url, payload);
-}
+export const get = <T = any>(path: string, query: { [key in string]: string }): Promise<T> =>
+  request<T>({
+    path,
+    method: 'GET',
+    query,
+  });
+
+export const post = <T = any>(path: string, body: any): Promise<T> =>
+  request<T>({
+    path,
+    method: 'POST',
+    body,
+  });
+
+export const del = <T = any>(path: string, query: { [key in string]: string }): Promise<T> =>
+  request<T>({
+    path,
+    method: 'DELETE',
+    query,
+  });
+
+export const put = <T = any>(path: string, body: any): Promise<T> =>
+  request<T>({
+    path,
+    method: 'PUT',
+    body,
+  });
+
+export const patch = <T = any>(path: string, body: any): Promise<T> =>
+  request<T>({
+    path,
+    method: 'PATCH',
+    body,
+  });
+
+export const head = <T = any>(path: string, query: { [key in string]: string }): Promise<T> =>
+  request<T>({
+    path,
+    method: 'HEAD',
+    query,
+  });

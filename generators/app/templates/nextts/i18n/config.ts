@@ -1,51 +1,34 @@
-import { InitOptions } from 'i18next';
+import NextI18Next from 'next-i18next';
 
-export enum languages {
-    EN = 'en',
-    ZH = 'zh',
-}
+const isServer = typeof window === 'undefined';
 
-const allLanguages = [languages.EN, languages.ZH];
-export const otherLanguages = allLanguages.filter((lang) => [languages.EN].indexOf(lang) < 0);
+export const defaultLang = 'en';
 
-export const defaultLanguage = languages.EN;
+export const allLangs = ['en'];
+
+export const langSelectors = ['English'];
 
 export const namespaces = ['common'];
 
-export const defaultNS = 'common';
+export const localePaths = {};
 
-export const baseConfigs: InitOptions = {
-    debug: false,
-    load: 'languageOnly',
-    fallbackLng: defaultLanguage,
-    ns: namespaces,
-    defaultNS,
-    saveMissing: false,
-    whitelist: allLanguages,
-};
+const NextI18NextInstance = new NextI18Next({
+  debug: false,
+  browserLanguageDetection: false,
+  serverLanguageDetection: false,
+  defaultLanguage: defaultLang,
+  fallbackLng: defaultLang,
+  otherLanguages: allLangs.filter((l) => l !== defaultLang),
+  whitelist: allLangs,
+  ns: namespaces,
+  localePath: 'public/locales',
+  localeSubpaths: localePaths,
+  preload: isServer ? allLangs : false,
+  defaultNS: 'common',
+  load: 'currentOnly',
+  missingKeyHandler: false,
+});
 
-export const clientConfigs: InitOptions = {
-    ...baseConfigs,
-    detection: {
-        caches: ['localStorage', 'cookie'],
-        order: ['localStorage', 'cookie'],
-        lookupCookie: '<%= app.name %>-i18n',
-        lookupLocalStorage: '<%= app.name %>.i18n',
-    },
-    interpolation: {
-        escapeValue: false,
-    },
-    debug: process.env.NODE_ENV !== 'production',
-};
+export default NextI18NextInstance;
 
-export const serverConfigs: InitOptions = {
-    ...baseConfigs,
-    preload: allLanguages,
-    detection: {
-        order: ['cookie'], // all
-        caches: ['cookie'], // default false
-        lookupPath: 'lng',
-        lookupFromPathIndex: 0,
-        lookupCookie: '<%= app.name %>-i18n',
-    },
-};
+export const { appWithTranslation, useTranslation, Link } = NextI18NextInstance;

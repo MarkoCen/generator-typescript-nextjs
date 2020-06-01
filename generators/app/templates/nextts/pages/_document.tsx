@@ -1,32 +1,38 @@
-import Document, { Head, Main, NextScript } from 'next/document';
-import { ReactElement } from 'react';
-import { ServerStyleSheet } from 'styled-components';
+/*  eslint-disable react/jsx-props-no-spreading, react/no-danger */
+import React from 'react';
+import Document, { Main, NextScript, Head, Html } from 'next/document';
+import { Helmet, HelmetData } from 'react-helmet';
 
-interface IDocProps {
-    styleTags: Array<ReactElement<{}>>;
-}
+export default class extends Document<{ helmet: HelmetData }> {
+  static async getInitialProps(...args) {
+    // @ts-ignore
+    const documentProps = await super.getInitialProps(...args);
+    return { ...documentProps, helmet: Helmet.renderStatic() };
+  }
 
-export default class MyDocument extends Document<IDocProps> {
-    static getInitialProps({ renderPage }) {
-        const sheet = new ServerStyleSheet();
-        const page = renderPage((App) => (props) => sheet.collectStyles(<App {...props} />));
-        const styleTags = sheet.getStyleElement();
-        return { ...page, styleTags };
-    }
+  get helmetHtmlAttrComponents() {
+    return this.props.helmet.htmlAttributes.toComponent();
+  }
 
-    render() {
-        return (
-            <html>
-                <Head>
-                    <title><%= app.name %>@<%= app.version %></title>
-                    <meta name="viewport" content="initial-scale=1.0, width=device-width" key="viewport" />
-                    {this.props.styleTags}
-                </Head>
-                <body>
-                    <Main />
-                    <NextScript />
-                </body>
-            </html>
-        );
-    }
+  get helmetBodyAttrComponents() {
+    return this.props.helmet.bodyAttributes.toComponent();
+  }
+
+  get helmetHeadComponents() {
+    return Object.keys(this.props.helmet)
+      .filter((el) => el !== 'htmlAttributes' && el !== 'bodyAttributes')
+      .map((el) => this.props.helmet[el].toComponent());
+  }
+
+  render() {
+    return (
+      <Html {...this.helmetHtmlAttrComponents}>
+        <Head>{this.helmetHeadComponents}</Head>
+        <body {...this.helmetBodyAttrComponents}>
+          <Main />
+          <NextScript />
+        </body>
+      </Html>
+    );
+  }
 }

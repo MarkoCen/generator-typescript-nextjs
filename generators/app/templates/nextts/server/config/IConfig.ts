@@ -1,9 +1,8 @@
 export default interface IConfig {
-    port: string;
-    sessionSecret: string;
-    mongodb: {
-        url: string;
-        username: string;
-        password: string;
-    };
+  port: string;
+  mongodb: {
+    url: string;
+    username: string;
+    password: string;
+  };
 }

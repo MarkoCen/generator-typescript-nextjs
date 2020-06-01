@@ -1,37 +1,41 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import fs from 'fs';
+import path from 'path';
 import * as winston from 'winston';
 
-const baseFolder = path.dirname(require.main.filename);
-const isProduction = process.env.NODE_ENV === 'production';
-const LOGS_FOLDER_NAME = 'logs/';
+const isProd = process.env.NODE_ENV === 'production';
 
 // create logs folder if not existed
-if (!fs.existsSync(path.resolve(baseFolder, LOGS_FOLDER_NAME))) {
-    fs.mkdirSync(path.resolve(baseFolder, LOGS_FOLDER_NAME));
+if (!fs.existsSync(path.resolve(__dirname, 'logs'))) {
+  fs.mkdirSync(path.resolve(__dirname, 'logs'));
 }
 
 const debugLogger = winston.createLogger({
-    level: 'debug',
-    transports: [
-        new winston.transports.Console({
-            level: 'debug',
-            handleExceptions: true,
-        }),
-    ],
+  level: 'debug',
+  transports: [
+    new winston.transports.Console({
+      level: 'debug',
+      handleExceptions: true,
+    }),
+  ],
 });
 
 const prologger = winston.createLogger({
-    level: 'info',
-    transports: [
-        new winston.transports.File({
-            filename: path.resolve(baseFolder, `${LOGS_FOLDER_NAME}system.log`),
-            maxsize: 10000000, // 10mb per log file
-            handleExceptions: true,
-        }),
-    ],
+  level: 'info',
+  transports: [
+    new winston.transports.File({
+      level: 'error',
+      filename: path.resolve(__dirname, `logs/error.log`),
+      maxsize: 10000000, // 10mb per log file
+      handleExceptions: true,
+    }),
+    new winston.transports.File({
+      filename: path.resolve(__dirname, `logs/system.log`),
+      maxsize: 10000000, // 10mb per log file
+      handleExceptions: false,
+    }),
+  ],
 });
 
-const logger = isProduction ? prologger : debugLogger;
+const logger = isProd ? prologger : debugLogger;
 
-export { logger };
+export default logger;

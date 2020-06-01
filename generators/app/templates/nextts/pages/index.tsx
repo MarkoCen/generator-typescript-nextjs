@@ -1,30 +1,21 @@
-import React, { Component } from 'react';
-import { connectI18n, I18nProps } from '../i18n/i18n-client';
-import GreetingsButton from '../client/components/common/GreetingsButton';
+import React, { FC } from 'react';
+import { useTranslation } from '~/i18n/config';
+import GreetingsButton from '~/client/components/common/greetings-button';
 
-interface IProps extends I18nProps {}
+interface IProps {}
 
-interface IStates {}
+const IndexPage: FC<IProps> = () => {
+  const { t } = useTranslation(['common']);
 
-class IndexPage extends Component<IProps, IStates> {
-    static async getInitialProps() {
-        return {
-            namespacesRequired: ['common'],
-        };
-    }
+  return (
+    <>
+      <header>{t('common:title')}</header>
+      <GreetingsButton text={'Click Me!'} />
+    </>
+  );
+};
 
-    state = {};
+// @ts-ignore
+IndexPage.getInitialProps = async () => ({ namespacesRequired: ['common'] });
 
-    render() {
-        const { t } = this.props;
-
-        return (
-            <>
-                <header>{t('common:title')}</header>
-                <GreetingsButton text={'Click Me!'} />
-            </>
-        );
-    }
-}
-
-export default connectI18n(['common'])(IndexPage);
+export default IndexPage;

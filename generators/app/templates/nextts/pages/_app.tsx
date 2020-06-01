@@ -1,32 +1,26 @@
-import withRedux from 'next-redux-wrapper';
-import App, { Container } from 'next/app';
-import React from 'react';
+import withRedux, { AppProps as ReduxAppProps, NextJSAppContext } from 'next-redux-wrapper';
+import { AppProps } from 'next/app';
+import React, { FC } from 'react';
 import { Provider } from 'react-redux';
-import { nextI18Next } from '../i18n/i18n-client';
-import { createStore } from '../store';
+import { appWithTranslation } from '~/i18n/config';
+import { createStore } from '~/store';
 
-require('../client/sass/globals.scss');
+import '~/client/styles/globals.scss';
 
-class NextJSTypeScriptApp extends App {
-    static async getInitialProps({ Component, ctx }) {
-        const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
-        return { pageProps };
-    }
-
-    render() {
-        const { Component, pageProps, store } = this.props;
-
-        return (
-            <Container>
-                <Provider store={store}>
-                    <>
-                        <Component {...pageProps} />
-                    </>
-                </Provider>
-            </Container>
-        );
-    }
-}
+const App: FC<AppProps & ReduxAppProps> = ({ store, Component, pageProps }) => {
+  return (
+    <Provider store={store}>
+      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+      <Component {...pageProps} />
+    </Provider>
+  );
+};
 
 // @ts-ignore
-export default withRedux(createStore)(nextI18Next.appWithTranslation(NextJSTypeScriptApp));
+App.getInitialProps = async ({ Component, ctx }: NextJSAppContext) => {
+  const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
+
+  return { pageProps };
+};
+
+export default withRedux(createStore)(appWithTranslation(App));
