@@ -12,7 +12,7 @@ export const namespaces = ['common'];
 
 export const localePaths = {};
 
-const NextI18NextInstance = new NextI18Next({
+export const nextI18Instance = new NextI18Next({
   debug: false,
   browserLanguageDetection: false,
   serverLanguageDetection: false,
@@ -29,6 +29,4 @@ const NextI18NextInstance = new NextI18Next({
   missingKeyHandler: false,
 });
 
-export default NextI18NextInstance;
-
-export const { appWithTranslation, useTranslation, Link } = NextI18NextInstance;
+export const { appWithTranslation, useTranslation, Link } = nextI18Instance;

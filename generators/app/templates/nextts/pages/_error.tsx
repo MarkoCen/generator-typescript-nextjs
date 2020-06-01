@@ -8,9 +8,7 @@ const ErrorPage: FC<IProps> = ({ statusCode }) => {
   return (
     <div>
       <p>
-        {this.props.statusCode
-          ? `An error ${this.props.statusCode} occurred on server`
-          : 'An error occurred on client'}
+        {statusCode ? `An error ${statusCode} occurred on server` : 'An error occurred on client'}
       </p>
     </div>
   );

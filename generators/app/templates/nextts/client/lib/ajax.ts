@@ -1,4 +1,4 @@
-import Axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import Axios, { AxiosRequestConfig } from 'axios';
 
 interface IRequestOptions<Body = any> {
   path: string;
@@ -21,12 +21,8 @@ const request = async <T>(opts: IRequestOptions): Promise<T> => {
     config.params = opts.query;
   }
 
-  try {
-    const response = await Axios.request<T>(config);
-    return response.data;
-  } catch (ex) {
-    throw ex;
-  }
+  const response = await Axios.request<T>(config);
+  return response.data;
 };
 
 export const get = <T = any>(path: string, query: { [key in string]: string }): Promise<T> =>

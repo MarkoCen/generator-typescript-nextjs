@@ -2,7 +2,7 @@ build
 out
 scripts
 next.config.js
-ecosystem.config.js
+pm2.config.js
 rollup.server.config.js
 .next
 .idea

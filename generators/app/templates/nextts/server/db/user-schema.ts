@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { Document, Model, Schema } from 'mongoose';
 import { IUser } from '~/models/user';
 import { conn } from '~/server/lib/mongodb';

@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express-serve-static-core';
 import { ControllerError, GreetingsError } from '~/models/errors';
-import { logger } from '~/server/lib/logger';
+import logger from '~/server/lib/logger';
 
 export const sendGreetings: RequestHandler<undefined, string, void> = async (req, res) => {
   try {

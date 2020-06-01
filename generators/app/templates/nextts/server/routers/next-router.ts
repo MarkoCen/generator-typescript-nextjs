@@ -26,6 +26,7 @@ async function render(req: Request, res: Response, pagePath, query = {}): Promis
     return html;
   } catch (err) {
     nextApp.renderError(err, req, res, pagePath, query);
+    return '';
   }
 }
 

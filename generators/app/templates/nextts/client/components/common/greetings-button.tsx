@@ -1,5 +1,5 @@
 import React, { FC, memo } from 'react';
-import { requestGreetings } from '~/services/greetings-service';
+import { requestGreetings } from '~/client/services/greetings-service';
 
 interface IProps {
   text: string;
@@ -8,11 +8,11 @@ interface IProps {
 const GreetingsButton: FC<IProps> = memo(({ text }) => {
   const onClick = async () => {
     const res = await requestGreetings();
-    alert(res);
+    console.log(res);
   };
 
   return (
-    <button className="btn btn-primary" onClick={onClick}>
+    <button type="submit" className="btn btn-primary" onClick={onClick}>
       {text}
     </button>
   );

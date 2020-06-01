@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import config from '~/server/config';
-import { logger } from './logger';
+import logger from './logger';
 
 const connectStr = `mongodb://${config.mongodb.username}:${config.mongodb.password}@${config.mongodb.url}`;
 const conn: mongoose.Connection = mongoose.createConnection(connectStr, {

@@ -10,7 +10,7 @@ const IndexPage: FC<IProps> = () => {
   return (
     <>
       <header>{t('common:title')}</header>
-      <GreetingsButton text={'Click Me!'} />
+      <GreetingsButton text="Click Me!" />
     </>
   );
 };
