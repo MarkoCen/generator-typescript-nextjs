@@ -71,8 +71,8 @@ class TypeScriptNextJSGenerator extends Generator {
   install() {
     if (!this.options['skip-install'])
       this.installDependencies({
-        yarn: true,
-        npm: false,
+        yarn: false,
+        npm: true,
         bower: false,
       });
   }
